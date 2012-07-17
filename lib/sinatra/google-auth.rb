@@ -31,10 +31,13 @@ module Sinatra
       end
 
       def handle_authentication_callback
+        puts 'handle_authentication_callback'
         unless session["user"]
           user_info = request.env["omniauth.auth"].info
           session["user"] = Array(user_info.email).first.downcase
-          session["user_info"] = user_info
+          session["user_id"] = Array(user_info.id).first
+          session["user_info"] = Array(user_info).to_s
+          end
         end
 
         url = session['google-auth-redirect'] || to("/")
